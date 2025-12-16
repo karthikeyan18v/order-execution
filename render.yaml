@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: order-execution
+    env: node
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: order-execution-redis
+          property: connectionString
+
+  - type: redis
+    name: order-execution-redis
+    ipAllowList: []
