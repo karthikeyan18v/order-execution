@@ -12,10 +12,7 @@ services:
         value: 3000
 
       - key: DATABASE_URL
-        fromService:
-          type: postgres
-          name: order-execution-db
-          property: connectionString
+        sync: false   # set manually in Render UI
 
       - key: REDIS_URL
         fromService:
@@ -26,7 +23,3 @@ services:
   - type: redis
     name: order-execution-redis
     ipAllowList: []
-
-  - type: postgres
-    name: order-execution-db
-    plan: free
