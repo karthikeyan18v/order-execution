@@ -28,6 +28,7 @@ Extending to Other Order Types:
 The same engine can support Limit Orders by delaying execution until a target price is met, and Sniper Orders by triggering execution based on on-chain events (e.g., token launch or liquidity addition), while reusing the same queue, router, and WebSocket lifecycle.
 
 Architecture Overview
+```bash
 Client
   │
   ├── POST /api/orders/execute
@@ -43,7 +44,7 @@ Client
   │   Redis (Live State) ──▶ WebSocket Updates
   │       ↓
   │   PostgreSQL (Final Order History)
-
+```
 🔁 Order Execution Lifecycle (WebSocket)
 
 Each order streams the following states in real time:
