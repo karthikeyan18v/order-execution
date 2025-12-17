@@ -4,6 +4,7 @@ exports.orderController = orderController;
 const zod_1 = require("zod");
 const order_service_1 = require("./order.service");
 const order_store_1 = require("./order.store");
+const redis_1 = require("../../config/redis");
 const idempotency_1 = require("../../utils/idempotency");
 const ws_manager_1 = require("../../websocket/ws.manager");
 /**
@@ -47,6 +48,21 @@ async function orderController(app) {
             status: "pending",
             message: "Order accepted",
         };
+    });
+    /**
+     * GET /api/orders
+     * Get all orders
+     */
+    app.get("/api/orders", async (req) => {
+        const keys = await redis_1.redis.keys('order:*');
+        const orders = [];
+        for (const key of keys) {
+            const orderData = await redis_1.redis.get(key);
+            if (orderData) {
+                orders.push(JSON.parse(orderData));
+            }
+        }
+        return { orders, count: orders.length };
     });
     /**
      * GET /api/orders/:orderId
