@@ -1,14 +1,14 @@
-🧾 Order Execution Engine (DEX Routing + WebSockets)
+# 🧾 Order Execution Engine (DEX Routing + WebSockets)
 
 A backend order execution engine that processes Market Orders with DEX routing, queue-based execution, and real-time WebSocket status updates.
 The system simulates execution across Raydium and Meteora DEXs with realistic delays, routing decisions, retries, and lifecycle events.
 
-🚀 Live Deployment
+# 🚀 Live Deployment
 
 Public URL:
 https://order-execution.onrender.com
 
-Problem Scope
+# Problem Scope
 
 This project demonstrates how a real-world trading backend:
 
@@ -19,7 +19,7 @@ Streams execution status live over WebSocket
 Persists final execution results
 Blockchain execution is mocked to focus on architecture, reliability, and real-time flow.
 
-🧠 Chosen Order Type: Market Order
+# 🧠 Chosen Order Type: Market Order
 
 Why Market Order?
 Market orders execute immediately at the best available price, making them ideal for demonstrating DEX routing, execution flow, queue processing, and real-time WebSocket updates without introducing price-trigger complexity.
@@ -27,7 +27,7 @@ Market orders execute immediately at the best available price, making them ideal
 Extending to Other Order Types:
 The same engine can support Limit Orders by delaying execution until a target price is met, and Sniper Orders by triggering execution based on on-chain events (e.g., token launch or liquidity addition), while reusing the same queue, router, and WebSocket lifecycle.
 
-Architecture Overview
+# Architecture Overview
 ```bash
 Client
   │
@@ -45,7 +45,7 @@ Client
   │       ↓
   │   PostgreSQL (Final Order History)
 ```
-🔁 Order Execution Lifecycle (WebSocket)
+# 🔁 Order Execution Lifecycle (WebSocket)
 
 Each order streams the following states in real time:
 
@@ -57,7 +57,7 @@ confirmed – Execution successful (includes mock txHash)
 failed – Execution failed (with error reason)
 
 
-🔀 DEX Routing Logic (Mocked)
+# 🔀 DEX Routing Logic (Mocked)
 
 Quotes are fetched in parallel from:
 Raydium
@@ -66,7 +66,7 @@ Prices differ by ~2–5% with simulated latency
 Best price is selected automatically
 Routing decision is logged for transparency
 
-📡 API Endpoints
+# 📡 API Endpoints && postman collection
 1️⃣ Execute Order (HTTP)
 POST /api/orders/execute
 ```bash
@@ -122,7 +122,7 @@ GET http://localhost:3000/api/orders/ORDER_ID_HERE
 ```
 
 
-⚙️ Tech Stack
+# ⚙️ Tech Stack
 
 Node.js + TypeScript
 Fastify (HTTP + WebSocket)
@@ -130,6 +130,12 @@ BullMQ + Redis (queue & active state)
 PostgreSQL (order history)
 Docker (local infra)
 Render (deployment)
+
+# Idempotency
+
+The execution endpoint supports idempotent requests.
+If the same idempotencyKey is sent multiple times, the same orderId is returned
+and duplicate execution is prevented.
 
 # Run App
 npm install
