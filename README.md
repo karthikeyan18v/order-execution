@@ -121,7 +121,6 @@ GET http://localhost:3000/api/orders/ORDER_ID_HERE
 }
 ```
 
-
 # ⚙️ Tech Stack
 
 Node.js + TypeScript
