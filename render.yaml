@@ -2,6 +2,7 @@ services:
   - type: web
     name: order-execution
     env: node
+    plan: free
     buildCommand: npm run build
     startCommand: export NODE_ENV=production && npm run migrate && npm start
     envVars:
