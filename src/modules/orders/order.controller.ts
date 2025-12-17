@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { createOrder } from "./order.service";
 import { getActiveOrder } from "./order.store";
+import { redis } from "../../config/redis";
 import {
   getOrderByIdempotencyKey,
   saveIdempotencyKey,
@@ -58,6 +59,24 @@ export async function orderController(app: FastifyInstance) {
       status: "pending",
       message: "Order accepted",
     };
+  });
+
+  /**
+   * GET /api/orders
+   * Get all orders
+   */
+  app.get("/api/orders", async (req) => {
+    const keys = await redis.keys('order:*');
+    const orders = [];
+    
+    for (const key of keys) {
+      const orderData = await redis.get(key);
+      if (orderData) {
+        orders.push(JSON.parse(orderData));
+      }
+    }
+    
+    return { orders, count: orders.length };
   });
 
   /**
